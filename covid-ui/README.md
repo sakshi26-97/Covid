@@ -1,11 +1,12 @@
-# cvat-ui
+# COVID-UI
 
 ## Description
 
 This is a client UI for Covid Application based on React, Redux and Material UI
 
 ## TO-DO
-- [] Add eslint configuration
+
+- [ ] Add eslint configuration
 
 ## Commands
 
