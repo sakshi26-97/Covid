@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.sakshi.covid.tracker.model"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.sakshi.covid.tracker.controller"},{"l":"com.sakshi.covid.tracker.model"},{"l":"com.sakshi.covid.vaccination.controller"},{"l":"com.sakshi.covid.vaccination.model"}];updateSearchResults();
