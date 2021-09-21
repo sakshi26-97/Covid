@@ -2,6 +2,7 @@ package com.sakshi.covid.vaccination.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import com.sakshi.covid.vaccination.model.Districts;
 import com.sakshi.covid.vaccination.model.Live;
 import com.sakshi.covid.vaccination.model.States;
 
+@CrossOrigin
 @RestController
 @RequestMapping("vaccination")
 public class Vaccination {
