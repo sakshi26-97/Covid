@@ -1,0 +1,9 @@
+{
+	"printWidth": 120,
+	"useTabs": true,
+	"parser": "typescript",
+	"singleQuote": true,
+	"quoteProps": "consistent",
+	"trailingComma": "none",
+	"arrowParens": "avoid"
+}
