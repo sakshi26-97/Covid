@@ -5,9 +5,9 @@
 This is a Covid Application which gives daily track of covid cases and finds vaccination centers
 
 ## Features
-- [ ] Track Covid cases across the globe
-- [ ] Fetch Covid cases by country/region
-- [ ] Vaccination count in India
+- [x] Track Covid cases across the globe
+- [x] Fetch Covid cases by country/region
+- [x] Vaccination count in India
 - [ ] Search Vaccination centers by Pincode
 - [ ] Search Vaccination centers by District
 - [ ] Search Vaccination centers by Map

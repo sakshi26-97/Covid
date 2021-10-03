@@ -1,16 +1,27 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import './App.scss';
 import { Redirect, Route, Switch } from 'react-router';
+import { RouteComponentProps } from "react-router-dom";
 
 // lazy loading components
-const AsyncAbout = React.lazy(() => import('./containers/about-page/about-page'));
+const AsyncTracker = React.lazy(() => import('./containers/tracker-page/tracker-page'));
+const AsyncVaccination = React.lazy(() => import('./containers/vaccination-page/vaccination-page'));
 
-function App(): JSX.Element {
+interface Props {
+	getVaccinationReport: () => void;
+}
+
+function App(props: Props & RouteComponentProps): JSX.Element {
+	useEffect(() => {
+		props.getVaccinationReport();
+	}, [props.getVaccinationReport]);
+
 	return (
 		<Suspense fallback={<p>Loading...</p>}>
 			<Switch>
-				<Route path="/about" component={AsyncAbout} />
-				<Redirect to="/about" />
+				<Route path="/tracker" component={AsyncTracker} />
+				<Route path="/vaccination" component={AsyncVaccination} />
+				<Redirect to="/tracker" />
 			</Switch>
 		</Suspense>
 	);

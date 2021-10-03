@@ -4,33 +4,33 @@ import { Provider, connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import createRootReducer from './reducers/root-reducer';
 import createAppStore, { getAppStore } from './store';
-import { CombinedState } from './reducers/interfaces';
-import { getAboutAsync } from './actions/about-actions';
-import './index.scss';
+import { CombinedState, VaccinationReport } from './reducers/interfaces';
+import './styles.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { getVaccinationReportAsync } from './actions/vaccination-actions';
 
 createAppStore(createRootReducer);
 const appStore = getAppStore();
 
 interface StateToProps {
-	aboutFetching: boolean;
+	report: VaccinationReport;
 }
 
 interface DispatchToProps {
-	loadAbout: () => void;
+	getVaccinationReport: () => void;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
-	const { about } = state;
+	const { vaccination } = state;
 	return {
-		aboutFetching: about.fetching
+		report: vaccination.report
 	};
 }
 
 function mapDispatchToProps(dispatch: any): DispatchToProps {
 	return {
-		loadAbout: (): void => dispatch(getAboutAsync())
+		getVaccinationReport: (): void => dispatch(getVaccinationReportAsync())
 	};
 }
 

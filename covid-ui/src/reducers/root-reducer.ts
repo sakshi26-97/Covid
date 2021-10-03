@@ -1,8 +1,10 @@
 import { combineReducers, Reducer } from 'redux';
-import aboutReducer from './about-reducer';
+import trackerReducer from './tracker-reducer';
+import vaccinationReducer from './vaccination-reducer';
 
 export default function createRootReducer(): Reducer {
     return combineReducers({
-        about: aboutReducer,
+        tracker: trackerReducer,
+        vaccination: vaccinationReducer,
     });
 }

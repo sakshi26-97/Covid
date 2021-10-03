@@ -1,5 +1,8 @@
 import React from 'react';
 
-import SVGLogoIcon from './assets/logo.svg';
+import SVGCovidIcon from './assets/covid19logo.svg';
+import SVGSyringeIcon from './assets/syringe.svg';
 
-export const LogoIcon = React.memo((): JSX.Element => <SVGLogoIcon />);
+export const CovidIcon = React.memo((): JSX.Element => <SVGCovidIcon />);
+
+export const SyringeIcon = React.memo((): JSX.Element => <SVGSyringeIcon />);

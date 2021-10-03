@@ -1,7 +1,10 @@
 package com.sakshi.covid.vaccination.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,10 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.sakshi.covid.vaccination.model.Center;
 import com.sakshi.covid.vaccination.model.Centers;
 import com.sakshi.covid.vaccination.model.Districts;
+import com.sakshi.covid.vaccination.model.District;
 import com.sakshi.covid.vaccination.model.Live;
+import com.sakshi.covid.vaccination.model.Report;
+import com.sakshi.covid.vaccination.model.State;
 import com.sakshi.covid.vaccination.model.States;
+import com.sakshi.covid.vaccination.model.TopBlock;
 
 @CrossOrigin
 @RestController
@@ -42,9 +50,9 @@ public class Vaccination {
 	 * @return List of states
 	 */
 	@GetMapping("state")
-	public States getStates() {
+	public List<State> getStates() {
 		States states = restTemplate.getForObject(COVID_VACCINATION_URL + "/v2/admin/location/states", States.class);
-		return states;
+		return states.getStates();
 	}
 	
 	/**
@@ -54,10 +62,9 @@ public class Vaccination {
 	 * @return List of ditricts for given state
 	 */
 	@GetMapping("district/{stateId}")
-	public Districts getDistricts(@PathVariable String stateId) {
-		System.out.println(COVID_VACCINATION_URL + "/v2/admin/location/districts/" + stateId);
-		Districts districts = restTemplate.getForObject(COVID_VACCINATION_URL + "/v2/admin/location/districts/" + districtId, Districts.class);
-		return districts;
+	public List<District> getDistricts(@PathVariable String stateId) {
+		Districts districts = restTemplate.getForObject(COVID_VACCINATION_URL + "/v2/admin/location/districts/" + stateId, Districts.class);
+		return districts.getDistricts();
 	}
 	
 	/**
@@ -68,10 +75,10 @@ public class Vaccination {
 	 * @return vaccination centers by pincode
 	 */
 	@GetMapping("search/pin")
-	public Centers getVaccinesByPin(@RequestParam String pincode, @RequestParam String date) {
+	public List<Center> getVaccinesByPin(@RequestParam String pincode, @RequestParam String date) {
 		String url = COVID_VACCINATION_URL + "/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + date;
 		Centers centers = restTemplate.getForObject(url, Centers.class);
-		return centers;
+		return centers.getCenters();
 	}
 	
 	/**
@@ -82,10 +89,10 @@ public class Vaccination {
 	 * @return vaccination centers by ditrict
 	 */
 	@GetMapping("search/district")
-	public Centers getVaccinesByDistrict(@RequestParam String districtId, @RequestParam String date) {
+	public List<Center> getVaccinesByDistrict(@RequestParam String districtId, @RequestParam String date) {
 		String url = COVID_VACCINATION_URL + "/v2/appointment/sessions/public/calendarByDistrict?district_id=" + districtId + "&date=" + date;
 		Centers centers = restTemplate.getForObject(url, Centers.class);
-		return centers;
+		return centers.getCenters();
 	}
 	
 	/**
@@ -102,9 +109,9 @@ public class Vaccination {
 		return centers;
 	}
 	
-//	@GetMapping("report")
-//	public Center getVaccineByCountry(@RequestParam String stateId, @RequestParam String districtId, @RequestParam String date) {
-//		Center center = restTemplate.getForObject(COVID_VACCINATION_URL + "/v1/reports/v2/getPublicReports??state_id=" + stateId + "&district_id=" + districtId + "&date=" + date, Center.class);
-//		return center;
-//	}
+	@GetMapping("report")
+	public TopBlock getVaccineReport() {
+		Report report = restTemplate.getForObject(COVID_VACCINATION_URL + "/v1/reports/v2/getPublicReports?state_id=&district_id=&date=", Report.class);
+		return report.getTopBlock();
+	}
 }

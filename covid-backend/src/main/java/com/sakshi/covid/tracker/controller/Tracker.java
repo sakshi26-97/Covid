@@ -17,7 +17,7 @@ import com.sakshi.covid.tracker.model.Country;
 import com.sakshi.covid.tracker.model.Province;
 import com.sakshi.covid.tracker.model.Summary;
 
-@CrossOrigin
+@CrossOrigin()
 @RestController()
 @RequestMapping("tracker")
 public class Tracker {
