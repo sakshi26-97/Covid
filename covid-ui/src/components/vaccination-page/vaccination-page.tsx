@@ -5,8 +5,6 @@ import NavbarComponent from '../navbar-page/navbar-page';
 import './styles.scss';
 
 import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -17,10 +15,8 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
-import { ArrowUpward } from '@mui/icons-material';
 import GroupIcon from '@mui/icons-material/Group';
 import FormHelperText from '@mui/material/FormHelperText';
-import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import  moment from "moment";
 import { SyringeIcon } from "../../icons";
@@ -31,6 +27,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Chip from '@mui/material/Chip';
+import { StatsComponent } from 'components/stats-page/stats-page';
+import SlotsComponent from 'components/slots-page/slots-page';
 
 interface VaccinationProps {
     liveCount: number;
@@ -78,9 +76,6 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
         const { getLiveCount, getStates } = this.props;
         getLiveCount();
         getStates();
-
-        //remove later
-        this.generateTableHeader(new Date());
     }
 
     public handleTabChange = (event: React.SyntheticEvent, newValue: number): void => {
@@ -176,7 +171,7 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
     }
 
     public render(): JSX.Element {
-        const { liveCount, states, district, report, centersByPin, history, location, match } = this.props;
+        const { liveCount, states, district, report, centersByPin, centersByDistrict, history, location, match } = this.props;
         const { pincode, tabValue, error, stateId, districtId, tableHeader } = this.state;
         return (
             <>
@@ -187,58 +182,23 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
                         <Grid item xs={12}>
                             <Grid container justifyContent='center' spacing={4}>
                                 <Grid item>
-                                    <Card sx={{ minWidth: 250, maxWidth: 300 }}>
-                                        <CardContent>
-                                            <Grid container spacing={2}>
-                                                <Grid item>
-                                                    <SyringeIcon />
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                                        Total Vaccination Count
-                                                    </Typography>
-                                                    <Typography variant="h6" component="div">
-                                                        { liveCount.toLocaleString() }
-                                                    </Typography>
-                                                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                                        Vaccination Today
-                                                    </Typography>
-                                                    <Typography variant="h6" component="div">
-                                                        { report.vaccination.today.toLocaleString() } {'  '}
-                                                        <ArrowUpward style={{color: "#1F3770", marginBottom: '-3px', fontSize: '1.4rem'}} />
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                        </CardContent>
-                                    </Card>
+                                    <StatsComponent 
+                                        caption1='Total Vaccination Count'
+                                        caption2='Vaccination Today'
+                                        value1={ report.vaccination.total_doses.toLocaleString() }
+                                        value2={ liveCount.toLocaleString() }
+                                        icon={ <SyringeIcon /> }
+                                    />
                                 </Grid>
 
                                 <Grid item>
-                                    <Card sx={{ minWidth: 250, maxWidth: 300 }}>
-                                        <CardContent>
-                                            <Grid container spacing={2}>
-                                                <Grid item>
-                                                    <GroupIcon />
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                                        Total Vaccination Registration
-                                                    </Typography>
-                                                    <Typography variant="h6" component="div">
-                                                    { report.registration.total.toLocaleString() }
-                                                    </Typography>
-                                                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                                        Registration Today
-                                                    </Typography>
-                                                    <Typography variant="h6" component="div">
-                                                        { report.registration.today.toLocaleString() } {'  '}
-                                                        <ArrowUpward style={{color: "#1F3770", marginBottom: '-3px', fontSize: '1.4rem'}} />
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                            
-                                        </CardContent>
-                                    </Card>
+                                    <StatsComponent 
+                                        caption1='Total Vaccination Registration'
+                                        caption2='Registration Today'
+                                        value1={ report.registration.total.toLocaleString() }
+                                        value2={ report.registration.today.toLocaleString() }
+                                        icon={ <GroupIcon /> }
+                                    />
                                 </Grid>
 
                             </Grid>
@@ -352,353 +312,20 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
                             )
                         }
 
-                        <Grid item xs={12}>
-                            <Grid container justifyContent='flex-start'>
-                                <Grid item>
-                                    <Typography variant="h6" component="div" gutterBottom style={{color: '#1F3770'}}>
-                                        Slot Search Results <Typography color="text.secondary" component="span">({centersByPin.length} centers(s) found)</Typography>
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        {
+                            tabValue === 0 && centersByPin.length > 0
+                            ? 
+                                <SlotsComponent tableHeader={tableHeader} centers={centersByPin} />
+                            : 
+                                (
+                                    tabValue === 1 && centersByDistrict.length > 0
+                                    ?
+                                        <SlotsComponent tableHeader={tableHeader} centers={centersByDistrict} />
+                                    :
+                                        null
+                                )
+                        }
 
-                        <Grid item xs={12}>
-                            <Grid container>
-                                <Grid item>
-                                    <Typography variant="caption" display="block" gutterBottom>
-                                        Filter results by:
-                                    </Typography>
-                                </Grid>
-
-                                <Grid item>
-                                    <Divider orientation="vertical" variant="middle" flexItem style={{height: '2em'}} />
-                                </Grid>
-
-                                <Grid item>
-                                    <Grid container direction='column'>
-                                        <Grid item>
-                                            <Typography variant="h6" component="div" gutterBottom style={{color: '#1F3770'}}>
-                                                Age
-                                            </Typography>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <Grid container>
-                                                <Grid item>
-                                                    <Button variant="outlined" >18 & Above</Button>
-                                                </Grid> 
-                                                <Grid item>
-                                                    <Button variant="outlined" >18-44 Only</Button>
-                                                </Grid> 
-                                                <Grid item>
-                                                    <Button variant="outlined" >45 & Above</Button>
-                                                </Grid>  
-                                            </Grid>
-                                        </Grid>
-
-                                    </Grid>
-                                </Grid>
-
-                                <Grid item>
-                                    <Divider orientation="vertical" variant="middle" flexItem style={{height: '2em'}} />
-                                </Grid>
-
-                                <Grid item>
-                                    <Grid container direction='column'>
-                                        <Grid item>
-                                            <Typography variant="h6" component="div" gutterBottom style={{color: '#1F3770'}}>
-                                                Cost
-                                            </Typography>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <Grid container>
-                                                <Grid item>
-                                                    <Button variant="outlined" >Paid</Button>
-                                                </Grid> 
-                                                <Grid item>
-                                                    <Button variant="outlined" >Free</Button>
-                                                </Grid> 
-                                            </Grid>
-                                        </Grid>
-
-                                    </Grid>
-                                </Grid>
-
-                                <Grid item>
-                                    <Divider orientation="vertical" variant="middle" flexItem style={{height: '2em'}} />
-                                </Grid>
-
-                                <Grid item>
-                                    <Grid container direction='column'>
-                                        <Grid item>
-                                            <Typography variant="h6" component="div" gutterBottom style={{color: '#1F3770'}}>
-                                                Vaccine
-                                            </Typography>
-                                        </Grid>
-
-                                        <Grid item>
-                                            <Grid container>
-                                                <Grid item>
-                                                    <Button variant="outlined" >Covishield</Button>
-                                                </Grid> 
-                                                <Grid item>
-                                                    <Button variant="outlined" >Covaxin</Button>
-                                                </Grid> 
-                                                <Grid item>
-                                                    <Button variant="outlined" >Sputnik V</Button>
-                                                </Grid> 
-                                            </Grid>
-                                        </Grid>
-
-                                    </Grid>
-                                </Grid>
-
-                            </Grid>
-                        </Grid>
-                        
-                        <Grid item xs={12}>
-                            <Paper sx={{minWidth: '100%', maxWidth: '100%'}}>
-                                <TableContainer>
-                                    <Table stickyHeader aria-label="sticky table">
-                                    <TableHead>
-                                        <TableRow>
-                                        {tableHeader.map((header: string, index: number) => (
-                                            <TableCell
-                                                key={index}
-                                                
-                                                style={{ minWidth: 170 }}
-                                            >
-                                            { header }
-                                            </TableCell>
-                                        ))}
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {
-                                            centersByPin
-                                            .map((center: Center) => {
-                                                return (
-                                                    <TableRow hover role="checkbox" tabIndex={-1} key={center.center_id}>
-                                                        <TableCell key={center.center_id} >
-                                                            <Typography variant="subtitle2" component="div" gutterBottom style={{ color: '#1F3770' }}>
-                                                                { center.name }{' '} 
-                                                                {
-                                                                    center.fee_type === 'Paid'
-                                                                    ? 
-                                                                    <Chip size='small' label={center.fee_type.toUpperCase()} style={{backgroundColor: '#1F3770', color: '#ffffff'}} />
-                                                                    :
-                                                                    <Chip size='small' label={center.fee_type.toUpperCase()} variant='outlined' />
-                                                                }
-                                                            </Typography>
-                                                            <Typography variant="caption" component="div" color='text.secondary' gutterBottom >
-                                                                { center.address }{', '}{center.district_name}{', '}{center.state_name}{', '}{center.pincode}
-                                                            </Typography>
-                                                            {
-                                                                center.vaccine_fees && center.vaccine_fees.map((vaccine_fee: {
-                                                                    vaccine: string;
-                                                                    fee: string
-                                                                }, index: number) => (
-                                                                    <Typography key={index} variant="overline" component="div" color='text.secondary' gutterBottom>
-                                                                        {vaccine_fee.vaccine}{': ' }{'\u20B9'}{vaccine_fee.fee}
-                                                                    </Typography>
-                                                                ))
-                                                            }
-                                                        </TableCell>
-
-                                                        <TableCell >
-                                                            {
-                                                                center.sessions.filter((session: Session) => {
-                                                                    return moment(session.date, 'DD-MM-YYYY').format('DD MMM YYYY') === tableHeader[1]
-                                                                }).map((session: Session) => (
-                                                                    // <p>{session.available_capacity}</p>
-                                                                    <Grid container key={session.session_id} direction='column'>
-                                                                        <Grid item>
-                                                                            <Typography variant="button" component="div" gutterBottom color='text.secondary'>
-                                                                                {session.vaccine}
-                                                                            </Typography>
-                                                                        </Grid>
-                                                                            
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 1: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose1}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        <Grid item >
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 2: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose2}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        
-                                                                    </Grid>
-                                                                ))
-                                                            }
-                                                        </TableCell>
-
-                                                        <TableCell >
-                                                            {
-                                                                center.sessions.filter((session: Session) => {
-                                                                    return moment(session.date, 'DD-MM-YYYY').format('DD MMM YYYY') === tableHeader[2]
-                                                                }).map((session: Session) => (
-                                                                    // <p>{session.available_capacity}</p>
-                                                                    <Grid container key={session.session_id} direction='column' >
-                                                                        <Grid item>
-                                                                            <Typography variant="button" component="div" gutterBottom color='text.secondary'>
-                                                                                {session.vaccine}
-                                                                            </Typography>
-                                                                        </Grid>
-                                                                            
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 1: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose1}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 2: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose2}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        
-                                                                    </Grid>
-                                                                ))
-                                                            }
-                                                        </TableCell>
-
-                                                        <TableCell >
-                                                            {
-                                                                center.sessions.filter((session: Session) => {
-                                                                    return moment(session.date, 'DD-MM-YYYY').format('DD MMM YYYY') === tableHeader[3]
-                                                                }).map((session: Session) => (
-                                                                    // <p>{session.available_capacity}</p>
-                                                                    <Grid container key={session.session_id} direction='column'>
-                                                                        <Grid item>
-                                                                            <Typography variant="button" component="div" gutterBottom color='text.secondary'>
-                                                                                {session.vaccine}
-                                                                            </Typography>
-                                                                        </Grid>
-                                                                            
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 1: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose1}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 2: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose2}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        
-                                                                    </Grid>
-                                                                ))
-                                                            }
-                                                        </TableCell>
-
-                                                        <TableCell >
-                                                            {
-                                                                center.sessions.filter((session: Session) => {
-                                                                    return moment(session.date, 'DD-MM-YYYY').format('DD MMM YYYY') === tableHeader[4]
-                                                                }).map((session: Session) => (
-                                                                    // <p>{session.available_capacity}</p>
-                                                                    <Grid container key={session.session_id} direction='column'>
-                                                                        <Grid item>
-                                                                            <Typography variant="button" component="div" gutterBottom color='text.secondary'>
-                                                                                {session.vaccine}
-                                                                            </Typography>
-                                                                        </Grid>
-                                                                            
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 1: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose1}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 2: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose2}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        
-                                                                    </Grid>
-                                                                ))
-                                                            }
-                                                        </TableCell>
-
-                                                        <TableCell >
-                                                            {
-                                                                center.sessions.filter((session: Session) => {
-                                                                    return moment(session.date, 'DD-MM-YYYY').format('DD MMM YYYY') === tableHeader[5]
-                                                                }).map((session: Session) => (
-                                                                    // <p>{session.available_capacity}</p>
-                                                                    <Grid container key={session.session_id} direction='column' >
-                                                                        <Grid item>
-                                                                            <Typography variant="button" component="div" gutterBottom color='text.secondary'>
-                                                                                {session.vaccine}
-                                                                            </Typography>
-                                                                        </Grid>
-                                                                            
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 1: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose1}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        <Grid item>
-                                                                            <Typography variant="body2" component="div" gutterBottom>
-                                                                                Available Dose 2: {' '}
-                                                                                <Typography variant="subtitle2" component="span" gutterBottom>
-                                                                                    {session.available_capacity_dose2}
-                                                                                </Typography>
-                                                                            </Typography>
-                                                                        </Grid>
-
-                                                                        
-                                                                    </Grid>
-                                                                ))
-                                                            }
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            })
-                                        }
-                                    </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </Paper>
-                        </Grid>
                     </Grid>
                 </Box>
                 
