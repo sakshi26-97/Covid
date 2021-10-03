@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider, connect } from "react-redux";
+import { Provider, connect } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import createRootReducer from './reducers/root-reducer';
 import createAppStore, { getAppStore } from './store';
@@ -13,40 +13,36 @@ import reportWebVitals from './reportWebVitals';
 createAppStore(createRootReducer);
 const appStore = getAppStore();
 
-
 interface StateToProps {
-    aboutFetching: boolean;
+	aboutFetching: boolean;
 }
 
 interface DispatchToProps {
-    loadAbout: () => void;
+	loadAbout: () => void;
 }
 
 function mapStateToProps(state: CombinedState): StateToProps {
-    const { about } = state;
-    return {
-        aboutFetching: about.fetching,
-    };
+	const { about } = state;
+	return {
+		aboutFetching: about.fetching
+	};
 }
 
 function mapDispatchToProps(dispatch: any): DispatchToProps {
-    return {
-        loadAbout: (): void => dispatch(getAboutAsync()),
-    };
+	return {
+		loadAbout: (): void => dispatch(getAboutAsync())
+	};
 }
 
-const ReduxAppWrapper = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(App);
+const ReduxAppWrapper = connect(mapStateToProps, mapDispatchToProps)(App);
 
 ReactDOM.render(
-    <Provider store={appStore}>
-        <BrowserRouter>
-            <ReduxAppWrapper />
-        </BrowserRouter>
-    </Provider>,
-  document.getElementById('root')
+	<Provider store={appStore}>
+		<BrowserRouter>
+			<ReduxAppWrapper />
+		</BrowserRouter>
+	</Provider>,
+	document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -30,7 +30,7 @@ public class Province {
 	@JsonProperty("Confirmed")
 	private String confirmed;
 	
-	@JsonProperty("deaths")
+	@JsonProperty("Deaths")
 	private String deaths;
 	
 	@JsonProperty("Recovered")
