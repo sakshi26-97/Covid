@@ -1,0 +1,63 @@
+.css-1aquho2-MuiTabs-indicator {
+    background-color: #1F3770 !important;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #1F3770 !important;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+    text-transform: none !important;
+}
+
+.search-button {
+    color: #ffffff !important;
+    background-color: #1F3770 !important;
+}
+
+.css-911tg4-MuiChip-root {
+    border-color: #1F3770 !important;
+    color: #1F3770 !important;
+}
+
+/* Extra small devices (phones, 900px and down) */
+@media only screen and (max-width: 500px) {
+    .search-button {
+        width: 200px;
+    }
+}
+
+// /* Extra small devices (phones, 600px and down) */
+// @media only screen and (max-width: 600px) {
+//     .search-button {
+//         width: 200px;
+//     }
+// }
+
+// /* Small devices (portrait tablets and large phones, 600px and up) */
+// @media only screen and (min-width: 600px) {
+//     .search-button {
+//         width: 200px;
+//     }
+// }
+
+// /* Medium devices (landscape tablets, 768px and up) */
+// @media only screen and (min-width: 768px) {
+//     .search-button {
+//         width: 200px;
+//     }
+// }
+
+// /* Large devices (laptops/desktops, 992px and up) */
+// @media only screen and (min-width: 992px) {
+//     .search-button {
+//         width: 200px;
+//     }
+// }
+
+// /* Extra large devices (large laptops and desktops, 1200px and up) */
+// @media only screen and (min-width: 1200px) {
+//     .search-button {
+//         width: 200px;
+//     }
+// }
