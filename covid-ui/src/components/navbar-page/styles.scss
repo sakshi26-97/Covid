@@ -1,0 +1,16 @@
+.icon {
+    display: inline-flex;
+    align-self: center;
+
+    svg {
+        height: 1em;
+        width: 1.2em;
+        fill: currentColor;
+        top: .2em;
+        position: relative;
+    }
+}
+
+.MuiPaper-elevation8 {
+    padding: 0 5px;
+}
