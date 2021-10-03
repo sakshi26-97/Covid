@@ -1,0 +1,15 @@
+npm-shrinkwrap.json
+package.json
+package-lock.json
+.serverless
+node_modules
+.build
+build
+.vscode
+*.css
+*.scss
+*.json
+*.min.js
+coverage
+public
+out
