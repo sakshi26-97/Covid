@@ -1,1 +1,5 @@
+com.sakshi.covid
+com.sakshi.covid.tracker.controller
 com.sakshi.covid.tracker.model
+com.sakshi.covid.vaccination.controller
+com.sakshi.covid.vaccination.model
