@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Center, District, State, VaccinationReport, Session } from '../../reducers/interfaces';
+import { Center, District, State, VaccinationReport } from '../../reducers/interfaces';
 import NavbarComponent from '../navbar-page/navbar-page';
 import './styles.scss';
 
@@ -11,24 +11,12 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import FormControl from '@mui/material/FormControl';
 import GroupIcon from '@mui/icons-material/Group';
-import FormHelperText from '@mui/material/FormHelperText';
-import Paper from '@mui/material/Paper';
 import  moment from "moment";
 import { SyringeIcon } from "../../icons";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Chip from '@mui/material/Chip';
 import { StatsComponent } from 'components/stats-page/stats-page';
 import SlotsComponent from 'components/slots-page/slots-page';
+import Autocomplete from '@mui/material/Autocomplete';
 
 interface VaccinationProps {
     liveCount: number;
@@ -90,9 +78,9 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
         })
     }
 
-    public handleDistrictChange = (event: SelectChangeEvent): void => {
+    public handleDistrictChange = (event: React.SyntheticEvent, district: District): void => {
         this.setState({
-            districtId: event.target.value
+            districtId: district.district_id
         })
     }
 
@@ -163,21 +151,21 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
         }
     }
 
-    public getDistricts = (event: SelectChangeEvent): void => {
+    public getDistricts = (event: React.SyntheticEvent, state: State): void => {
         this.setState({
-            stateId: event.target.value
+            stateId: state.state_id
         })
-        this.props.getDistricts(event.target.value);
+        this.props.getDistricts(state.state_id);
     }
 
     public render(): JSX.Element {
         const { liveCount, states, district, report, centersByPin, centersByDistrict, history, location, match } = this.props;
-        const { pincode, tabValue, error, stateId, districtId, tableHeader } = this.state;
+        const { pincode, tabValue, error, tableHeader } = this.state;
         return (
             <>
                 <NavbarComponent history={history} location={location} match={match} />
 
-                <Box flexGrow={1} display="flex" style={{margin: '2em 6em'}}>
+                <Box flexGrow={1} display="flex" className='box-container'>
                     <Grid container sx={{flexGrow: 1}} rowSpacing={2} columnSpacing={2}>
                         <Grid item xs={12}>
                             <Grid container justifyContent='center' spacing={4}>
@@ -218,8 +206,8 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
                             <Grid container justifyContent='center'>
                                 <Grid item>
                                 <Tabs value={tabValue} onChange={this.handleTabChange} centered>
-                                    <Tab label="Search By Pin" style={{margin: '0 20px 0 20px'}} />
-                                    <Tab label="Search By District" style={{margin: '0 20px 0 20px'}} />
+                                    <Tab label="Search By Pin" className='tab-value' />
+                                    <Tab label="Search By District" className='tab-value' />
                                 </Tabs>
                                 </Grid>
                             </Grid>
@@ -234,6 +222,7 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
                                     <Grid container justifyContent='center' spacing={4}>
                                         <Grid item>
                                             <TextField 
+                                                style={{ minWidth: 200, maxWidth: 200 }}
                                                 id="outlined-basic" 
                                                 label="Enter your PIN" 
                                                 variant="outlined" 
@@ -258,50 +247,53 @@ export default class VaccinationComponent extends React.PureComponent<Props, Vac
                                 <Grid item xs={12}>
                                     <Grid container justifyContent="center" spacing={4}>
                                         <Grid item>
-                                            <FormControl sx={{ minWidth: 200, maxWidth: 200 }} error={error?.state} size='small'>
-                                                <InputLabel id="select-state-label">Select State</InputLabel>
-                                                <Select
-                                                    labelId="simple-select-state-label"
-                                                    id="simple-select-state"
-                                                    value={stateId}
-                                                    label="Select State"
-                                                    onChange={this.getDistricts}
-                                                    // renderValue={(value) => value}
-                                                >
-                                                    {
-                                                        states.map((state: {
-                                                            state_id: string,
-                                                            state_name: string
-                                                        }) => (
-                                                            <MenuItem key={state.state_id} value={state.state_id}>{state.state_name}</MenuItem>
-                                                        ))
-                                                    }
-                                                </Select>
-                                                <FormHelperText>{error?.state}</FormHelperText>
-                                            </FormControl>
+                                            <Autocomplete
+                                                id="state"
+                                                disableClearable
+                                                options={ states }
+                                                getOptionLabel={(option: State) => option.state_name}
+                                                sx={{ minWidth: 200, maxWidth: 200 }}
+                                                size='small'
+                                                onChange={(event: React.SyntheticEvent, state: State) => this.getDistricts(event, state)}
+                                                renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Select State"
+                                                            InputProps={{
+                                                                ...params.InputProps,
+                                                                type: 'search'
+                                                            }}
+                                                            error={error?.state}
+                                                            helperText={error?.state}
+                                                        />
+                                                    )
+                                                }
+                                            />
                                         </Grid>
 
                                         <Grid item>
-                                            <FormControl sx={{ minWidth: 200, maxWidth: 200 }} error={error?.district} size='small'>
-                                                <InputLabel id="select-district-label">Select District</InputLabel>
-                                                <Select
-                                                    labelId="simple-select-district-label"
-                                                    id="simple-select-district"
-                                                    value={districtId}
-                                                    label="Select District"
-                                                    onChange={this.handleDistrictChange}
-                                                >
-                                                    {
-                                                        district.map((d: {
-                                                            district_id: string,
-                                                            district_name: string
-                                                        }) => (
-                                                            <MenuItem key={d.district_id} value={d.district_id}>{d.district_name}</MenuItem>
-                                                        ))
-                                                    }
-                                                </Select>
-                                                <FormHelperText>{error?.district}</FormHelperText>
-                                            </FormControl>
+                                            <Autocomplete
+                                                id="district"
+                                                disableClearable
+                                                options={ district }
+                                                getOptionLabel={(option: District) => option.district_name}
+                                                sx={{ minWidth: 200, maxWidth: 200 }}
+                                                size='small'
+                                                onChange={(event: React.SyntheticEvent, d: District) => this.handleDistrictChange(event, d)}
+                                                renderInput={(params) => (
+                                                        <TextField
+                                                            {...params}
+                                                            label="Select District"
+                                                            InputProps={{
+                                                                ...params.InputProps,
+                                                                type: 'search'
+                                                            }}
+                                                            error={error?.district}
+                                                            helperText={error?.district}
+                                                        />
+                                                    )
+                                                }
+                                            />
                                         </Grid>
 
                                         <Grid item>

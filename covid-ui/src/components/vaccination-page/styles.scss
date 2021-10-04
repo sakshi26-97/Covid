@@ -20,44 +20,13 @@
     color: #1F3770 !important;
 }
 
+.tab-value {
+    margin: 0 20px 0 20px !important;
+}
+
 /* Extra small devices (phones, 900px and down) */
 @media only screen and (max-width: 500px) {
     .search-button {
         width: 200px;
     }
 }
-
-// /* Extra small devices (phones, 600px and down) */
-// @media only screen and (max-width: 600px) {
-//     .search-button {
-//         width: 200px;
-//     }
-// }
-
-// /* Small devices (portrait tablets and large phones, 600px and up) */
-// @media only screen and (min-width: 600px) {
-//     .search-button {
-//         width: 200px;
-//     }
-// }
-
-// /* Medium devices (landscape tablets, 768px and up) */
-// @media only screen and (min-width: 768px) {
-//     .search-button {
-//         width: 200px;
-//     }
-// }
-
-// /* Large devices (laptops/desktops, 992px and up) */
-// @media only screen and (min-width: 992px) {
-//     .search-button {
-//         width: 200px;
-//     }
-// }
-
-// /* Extra large devices (large laptops and desktops, 1200px and up) */
-// @media only screen and (min-width: 1200px) {
-//     .search-button {
-//         width: 200px;
-//     }
-// }
