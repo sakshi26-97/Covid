@@ -284,7 +284,7 @@ export default class TrackerComponent extends React.PureComponent<Props, Tracker
                                                         return 0;
                                                     })
                                                 }
-                                                getOptionLabel={(option) => option.Country}
+                                                getOptionLabel={(option: Country) => option.Country}
                                                 sx={{ minWidth: 200, maxWidth: 200 }}
                                                 size='small'
                                                 onChange={(event: SyntheticEvent, country: Country) => this.handleCountryChange(event, country)}
