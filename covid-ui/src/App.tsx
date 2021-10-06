@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
-import './App.scss';
+import './styles.scss';
 import { Redirect, Route, Switch } from 'react-router';
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from 'react-router-dom';
 
 // lazy loading components
 const AsyncTracker = React.lazy(() => import('./containers/tracker-page/tracker-page'));

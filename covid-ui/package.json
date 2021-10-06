@@ -51,14 +51,26 @@
     "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,ts,tsx}\"",
     "prettier": "prettier --check \"src/**/*.{js,ts,tsx}\"",
-    "prettier:fix": "prettier --write \"src/**/*.{js,ts,tsx}\"",
-    "lint-staged": "{ \"src/**/*.{js,ts,tsx}\": [\"npm run lint:fix\", \"npm run prettier:fix\"]}"
+    "prettier:fix": "prettier --write \"src/**/*.{js,ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
+  },
+  "husky": {
+    "hooks": {
+        "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+      "src/**/*.{js,ts,tsx}": [
+          "eslint --fix \"src/**/*.{js,ts,tsx}\""
+      ],
+      "*.{json,md,html}": [
+          "prettier --write \"src/**/*.{js,ts,tsx}\""
+      ]
   },
   "browserslist": {
     "production": [

@@ -6,9 +6,6 @@ node_modules
 .build
 build
 .vscode
-*.css
-*.scss
-*.json
 *.min.js
 coverage
 public
