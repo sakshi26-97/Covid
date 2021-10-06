@@ -48,10 +48,10 @@
     "eject": "react-scripts eject",
     "clean": "npm run lint && npm run prettier",
     "clean:fix": "npm run lint:fix && npm run prettier:fix",
-    "lint": "eslint \"src/*.{js,ts,tsx}\"",
-    "lint:fix": "eslint --fix \"src/*.{js,ts,tsx}\"",
-    "prettier": "prettier --check \"src/*.{js,ts,tsx}\"",
-    "prettier:fix": "prettier --write \"src/*.{js,ts,tsx}\""
+    "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
+    "lint:fix": "eslint --fix \"src/**/*.{js,ts,tsx}\"",
+    "prettier": "prettier --check \"src/**/*.{js,ts,tsx}\"",
+    "prettier:fix": "prettier --write \"src/**/*.{js,ts,tsx}\""
   },
   "eslintConfig": {
     "extends": [
