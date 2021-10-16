@@ -108,6 +108,11 @@ public class Vaccination {
 		return centers;
 	}
 	
+	/**
+	 * Fetches summary of vaccination
+	 * 
+	 * @return vaccination report
+	 */
 	@GetMapping("report")
 	public TopBlock getVaccineReport() {
 		Report report = restTemplate.getForObject(COVID_VACCINATION_URL + "/v1/reports/v2/getPublicReports?state_id=&district_id=&date=", Report.class);
