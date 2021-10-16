@@ -17,3 +17,14 @@ This is a Covid Application which gives daily track of covid cases and finds vac
 - covid-core repo [covid-core](covid-core/README.md)
 
 ## Screenshots
+*Track Covid cases across the globe*
+![track_globe](/screenshot/track_globe.png)
+
+*Fetch Covid cases by country/region*
+![track_country](/screenshot/track_country.png)
+
+*Search Vaccination centers by Pincode*
+![search_pin](/screenshot/search_pin.png)
+
+*Search Vaccination centers by District*
+![search_district](/screenshot/search_district.png)

@@ -9,6 +9,7 @@ This is a client UI for Covid Application based on React, Redux and Material UI
 - Installing dependencies:
 
 ```bash
+nvm use
 npm i
 ```
 

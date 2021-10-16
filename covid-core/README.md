@@ -9,6 +9,7 @@ This COVID-CORE module is a client-side JavaScript library which presents an int
 - Dependencies installation
 
 ```bash
+nvm use
 npm i
 ```
 
