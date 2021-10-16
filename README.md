@@ -8,9 +8,8 @@ This is a Covid Application which gives daily track of covid cases and finds vac
 - [x] Track Covid cases across the globe
 - [x] Fetch Covid cases by country/region
 - [x] Vaccination count in India
-- [ ] Search Vaccination centers by Pincode
-- [ ] Search Vaccination centers by District
-- [ ] Search Vaccination centers by Map
+- [x] Search Vaccination centers by Pincode
+- [x] Search Vaccination centers by District
 
 ## Setup
 - covid-backend repo [covid-backend](covid-backend/README.md)
