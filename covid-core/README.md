@@ -4,10 +4,6 @@
 
 This COVID-CORE module is a client-side JavaScript library which presents an interface for client-side integration.
 
-## TO-DO
-
-- [ ] Add eslint configuration
-
 ### Commands
 
 - Dependencies installation

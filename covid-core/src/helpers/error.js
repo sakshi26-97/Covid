@@ -1,3 +1,9 @@
+/**
+ * Generate Error Response
+ * 
+ * @param {any} errorData Error data
+ * @returns error response
+ */
 function generateError(errorData) {
     if (errorData.response) {
         const message = `${errorData.message}. ${JSON.stringify(errorData.response.data) || ''}.`;
@@ -15,6 +21,4 @@ function generateError(errorData) {
     }
 }
 
-module.exports = {
-    generateError
-}
+module.exports = generateError;
