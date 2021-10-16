@@ -1,7 +1,8 @@
 import { ActionUnion, createAction, ThunkAction } from '../utils/redux';
-import axios from 'axios';
-import consts from '../consts';
 import { CountByCountry, Country, Summary } from '../reducers/interfaces';
+import getCore from '../covid-core-wrapper';
+
+const core = getCore();
 
 export enum TrackerAactionTypes {
 	GET_COUNTRIES = 'GET_COUNTRIES',
@@ -40,7 +41,7 @@ export const getCountriesAsync =
 		dispatch(trackerActions.getCountries());
 
 		try {
-			const response = (await axios.get(`${consts.COVID_BACKEND_URL}/tracker/country`)).data;
+			const response = await core.tracker.getCountries();
 			dispatch(trackerActions.getCountriesSuccess(response));
 		} catch (error) {
 			dispatch(trackerActions.getCountriesFailed(error));
@@ -53,7 +54,7 @@ export const getCountByCountryAsync =
 		dispatch(trackerActions.getCountByCountry());
 
 		try {
-			const response = (await axios.get(`${consts.COVID_BACKEND_URL}/tracker/country/${countryName}`)).data;
+			const response = await core.tracker.getCountByCountry(countryName);
 			dispatch(trackerActions.getCountByCountrySuccess(response));
 		} catch (error) {
 			dispatch(trackerActions.getCountByCountryFailed(error));
@@ -66,7 +67,7 @@ export const getSummaryAsync =
 		dispatch(trackerActions.getSummary());
 
 		try {
-			const response = (await axios.get(`${consts.COVID_BACKEND_URL}/tracker/summary`)).data;
+			const response = await core.tracker.getSummary();
 			dispatch(trackerActions.getSummarySuccess(response));
 		} catch (error) {
 			dispatch(trackerActions.getSummaryFailed(error));

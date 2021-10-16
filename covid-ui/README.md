@@ -4,10 +4,6 @@
 
 This is a client UI for Covid Application based on React, Redux and Material UI
 
-## TO-DO
-
-- [x] Add eslint configuration
-
 ## Commands
 
 - Installing dependencies:

@@ -1,7 +1,8 @@
 import { ActionUnion, createAction, ThunkAction } from '../utils/redux';
-import axios from 'axios';
-import consts from '../consts';
 import { Center, District, State, VaccinationReport } from '../reducers/interfaces';
+import getCore from '../covid-core-wrapper';
+
+const core = getCore();
 
 export enum VaccinationAactionTypes {
 	GET_LIVE_COUNT = 'GET_LIVE_COUNT',
@@ -67,7 +68,7 @@ export const getLiveCountAsync =
 		dispatch(vaccinationActions.getLiveCount());
 
 		try {
-			const response = (await axios.get(`${consts.COVID_BACKEND_URL}/vaccination/live/count`)).data;
+			const response = await core.vaccination.getLiveCount();
 			dispatch(vaccinationActions.getLiveCountSuccess(response));
 		} catch (error) {
 			dispatch(vaccinationActions.getLiveCountFailed(error));
@@ -80,7 +81,7 @@ export const getStatesAsync =
 		dispatch(vaccinationActions.getStates());
 
 		try {
-			const response = (await axios.get(`${consts.COVID_BACKEND_URL}/vaccination/state`)).data;
+			const response = await core.vaccination.getStates();
 			dispatch(vaccinationActions.getStatesSuccess(response));
 		} catch (error) {
 			dispatch(vaccinationActions.getStatesFailed(error));
@@ -93,7 +94,7 @@ export const getDistrictsAsync =
 		dispatch(vaccinationActions.getDistricts());
 
 		try {
-			const response = (await axios.get(`${consts.COVID_BACKEND_URL}/vaccination/district/${stateId}`)).data;
+			const response = await core.vaccination.getDistricts(stateId);
 			dispatch(vaccinationActions.getDistrictsSuccess(response));
 		} catch (error) {
 			dispatch(vaccinationActions.getDistrictsFailed(error));
@@ -106,9 +107,7 @@ export const searchByPinAsync =
 		dispatch(vaccinationActions.searchByPin());
 
 		try {
-			const response = (
-				await axios.get(`${consts.COVID_BACKEND_URL}/vaccination/search/pin?pincode=${pincode}&date=${date}`)
-			).data;
+			const response = await core.vaccination.searchByPin(pincode, date);
 			dispatch(vaccinationActions.searchByPinSuccess(response));
 		} catch (error) {
 			dispatch(vaccinationActions.searchByPinFailed(error));
@@ -121,9 +120,7 @@ export const searchByDistrictAsync =
 		dispatch(vaccinationActions.searchByDistrict());
 
 		try {
-			const response = (
-				await axios.get(`${consts.COVID_BACKEND_URL}/vaccination/search/district?districtId=${districtId}&date=${date}`)
-			).data;
+			const response = await core.vaccination.searchByDistrict(districtId, date);
 			dispatch(vaccinationActions.searchByDistrictSuccess(response));
 		} catch (error) {
 			dispatch(vaccinationActions.searchByDistrictFailed(error));
@@ -136,7 +133,7 @@ export const getVaccinationReportAsync =
 		dispatch(vaccinationActions.getVaccinationReport());
 
 		try {
-			const response = (await axios.get(`${consts.COVID_BACKEND_URL}/vaccination/report`)).data;
+			const response = await core.vaccination.getVaccinationReport();
 			dispatch(vaccinationActions.getVaccinationReportSuccess(response));
 		} catch (error) {
 			dispatch(vaccinationActions.getVaccinationReportFailed(error));
