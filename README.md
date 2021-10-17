@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a Covid Application which gives daily track of covid cases and finds vaccination centers
+This is a Covid Application which gives daily track of covid cases and finds vaccination centers. It is developed using Spring Boot and React using typescript.
 
 ## Features
 - [x] Track Covid cases across the globe
